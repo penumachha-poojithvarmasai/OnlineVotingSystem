@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Check | Online Voting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; top: 0 !important; background-color: #f8fafc; background-image: radial-gradient(at 0% 0%, hsla(28, 90%, 65%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, hsla(220, 90%, 65%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(140, 90%, 60%, 0.15) 0px, transparent 50%); background-attachment: fixed; min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1); }
+        .header-glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border-bottom: 2px solid rgba(249, 115, 22, 0.8); }
+        .input-premium { background: rgba(255,255,255,0.7); border: 2px solid #e2e8f0; transition: all 0.3s ease; }
+        .input-premium:focus { background: #ffffff; border-color: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); transform: translateY(-2px); }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; } .goog-te-gadget { color: transparent !important; } .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget-simple { background-color: rgba(255,255,255,0.1) !important; border-radius: 8px !important; padding: 8px 14px !important; font-size: 14px !important; border: 1px solid rgba(255,255,255,0.2) !important; cursor: pointer !important; }
+        .goog-te-menu-value { color: #f8fafc !important; font-weight: 500; font-family: 'Outfit'; } .goog-te-menu-value span { color: #f8fafc !important; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 relative">
+    <!-- Futuristic Particles Background -->
+    <div id="particles-js" class="fixed inset-0 z-0"></div>
+    <header class="header-glass text-white py-4 relative z-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center max-w-6xl">
+            <div class="flex items-center mb-4 md:mb-0 group cursor-pointer">
+                <div class="relative w-12 h-12 mr-4">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-orange-400 to-green-500 rounded-full blur group-hover:blur-md transition-all duration-500"></div>
+                    <div class="relative w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-2xl border border-white/20 shadow-lg transform group-hover:rotate-12 transition-all duration-500">🏛️</div>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-slate-200">Online Voting System</h1>
+                </div>
+            </div>
+            <div class="relative group">
+                <select id="customLanguageSelect" onchange="changeLanguage(this.value)" class="appearance-none bg-slate-800/80 border border-slate-700 text-slate-300 py-2 pl-4 pr-8 rounded-full font-medium text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer backdrop-blur-md hover:bg-slate-700 transition">
+                    <option value="en">English (En)</option>
+                    <option value="hi">Hindi (हिंदी)</option>
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="ur">Urdu (اردو)</option>
+                    <option value="gu">Gujarati (ગુજરાતી)</option>
+                    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                    <option value="or">Odia (ଓଡ଼ിയ)</option>
+                </select>
+            </div>
+            <div id="google_translate_element" style="display:none;"></div>
+        </div>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,or,ml,pa,en', autoDisplay: false }, 'google_translate_element');
+            }
+            function changeLanguage(langCode) {
+                var selectField = document.querySelector(".goog-te-combo");
+                if(selectField) { selectField.value = langCode; selectField.dispatchEvent(new Event('change')); }
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                const addStyle = document.createElement('style');
+                addStyle.innerHTML = 'body { top: 0 !important; } .goog-te-banner-frame { display: none !important; }';
+                document.head.appendChild(addStyle);
+            });
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12 relative z-10 w-full max-w-7xl mx-auto">
+        <div class="glass p-10 md:p-14 rounded-3xl w-full max-w-md animate-fade-up opacity-0 border-t-8 border-t-green-500 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-16 -right-16 w-32 h-32 bg-green-500/20 rounded-full blur-xl animate-pulse"></div>
+            
+            <div class="text-center mb-10 relative z-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 border-4 border-white shadow-xl mb-4 transform hover:scale-110 transition duration-300 text-green-600">
+                    <span class="text-4xl">🔐</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-800">Security Check</h2>
+                <p class="text-slate-500 font-medium mt-2">Enter the 6-digit OTP sent to your email.</p>
+            </div>
+
+            <form method="post" action="/otp-verify" class="space-y-6 relative z-10">
+                <div>
+                    <input type="text" name="otp" id="otp" placeholder="••••••" required maxlength="6"
+                        class="w-full py-6 text-center tracking-[1em] rounded-2xl input-premium text-3xl font-extrabold outline-none text-slate-800 placeholder-slate-300 shadow-inner">
+                </div>
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full py-4 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 rounded-xl font-extrabold text-white text-lg tracking-widest uppercase transition-all duration-300 transform hover:-translate-y-1 shadow-xl hover:shadow-green-500/40 focus:ring-4 focus:ring-green-300 flex justify-center items-center gap-2">
+                        Authenticate & Login <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                </div>
+                <div th:if="${error}" class="mt-4 p-4 bg-red-50/90 backdrop-blur-sm border-l-4 border-red-500 text-red-700 rounded-lg flex items-start">
+                    <span class="mr-2 mt-0.5 animate-pulse">⚠️</span> <span th:text="${error}" class="font-medium"></span>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="bg-indigo-950 text-white/60 py-8 relative z-50 text-center font-light border-t border-indigo-900/50 mt-auto">
+        <p class="text-sm tracking-widest uppercase mb-2">&copy; 2026 E-Election Commission of India.</p>
+    </footer>
+
+    <!-- Particles JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": {"number": {"value": 70,"density": {"enable": true,"value_area": 800}},"color": {"value": "#10b981"},"shape": {"type": "circle"},"opacity": {"value": 0.4,"random": false},"size": {"value": 2,"random": true},"line_linked": {"enable": true,"distance": 150,"color": "#34d399","opacity": 0.3,"width": 1},"move": {"enable": true,"speed": 2,"direction": "none","random": false,"straight": false,"out_mode": "out","bounce": false}},
+            "interactivity": {"detect_on": "window","events": {"onhover": {"enable": true,"mode": "grab"},"onclick": {"enable": true,"mode": "push"},"resize": true},"modes": {"grab": {"distance": 140,"line_linked": {"opacity": 0.8}},"push": {"particles_nb": 3}}},
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>

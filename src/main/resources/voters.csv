@@ -1,0 +1,11 @@
+VoterID,FirstName,LastName,DateOfBirth,Gender,Address,City,State,Pincode,Email
+VTR001,Priya,Sharma,12-03-1985,Female,12 Gandhi Marg,Mumbai,Maharashtra,400001,sunny84140104@gmail.com
+VTR002,Rahul,Singh,25-07-1992,Male,B-45 Nehru Nagar,Delhi,Delhi,110002,sunny84140104@gmail.com
+VTR003,Anjali,Patel,01-11-1978,Female,7 Lake View Apt,Bengaluru,Karnataka,560008,sunny84140104@gmail.com
+VTR004,Amit,Kumar,18-01-1989,Male,Plot 30 Sector 10,Gurugram,Haryana,122001,sunny84140104@gmail.com
+VTR005,Deepa,Reddy,03-09-1995,Female,5th Cross Road,Hyderabad,Telangana,500034,sunny84140104@gmail.com
+VTR006,Sanjay,Yadav,29-04-1972,Male,101 Royal Residency,Lucknow,Uttar Pradesh,226001,sunny84140104@gmail.com
+VTR007,Meena,Gupta,15-06-1980,Female,Flat 203 Green Park,Kolkata,West Bengal,700019,sunny84140104@gmail.com
+VTR008,Vikram,Chauhan,07-12-1990,Male,8 MG Road,Pune,Maharashtra,411001,sunny84140104@gmail.com
+VTR009,Shweta,Jain,20-02-1983,Female,15 Civil Lines,Jaipur,Rajasthan,302006,sunny84140104@gmail.com
+VTR010,Rajesh,Mehta,10-08-1975,Male,22 Anand Vihar,Ahmedabad,Gujarat,380015,sunny84140104@gmail.com

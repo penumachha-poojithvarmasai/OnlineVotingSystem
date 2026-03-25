@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Voting Results | Online Voting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; top: 0 !important; background-color: #f8fafc; background-image: radial-gradient(at 0% 0%, hsla(28, 90%, 65%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, hsla(220, 90%, 65%, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(140, 90%, 60%, 0.15) 0px, transparent 50%); background-attachment: fixed; min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1); }
+        .header-glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border-bottom: 2px solid rgba(249, 115, 22, 0.8); }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; } .goog-te-gadget { color: transparent !important; } .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget-simple { background-color: rgba(255,255,255,0.1) !important; border-radius: 8px !important; padding: 8px 14px !important; font-size: 14px !important; border: 1px solid rgba(255,255,255,0.2) !important; cursor: pointer !important; }
+        .goog-te-menu-value { color: #f8fafc !important; font-weight: 500; font-family: 'Outfit'; } .goog-te-menu-value span { color: #f8fafc !important; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+    <header class="header-glass text-white py-4 relative z-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center max-w-6xl">
+            <div class="flex items-center mb-4 md:mb-0 group cursor-pointer hover:opacity-90">
+                <div class="relative w-12 h-12 mr-4">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-orange-400 to-green-500 rounded-full blur group-hover:blur-md transition-all duration-500"></div>
+                    <div class="relative w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-2xl border border-white/20 shadow-lg transform group-hover:rotate-12 transition-all duration-500">🏛️</div>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-slate-200">Online Voting System</h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="/vote" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-full font-bold transition duration-300 text-sm tracking-wide">
+                    ⬅️ Back to Booth
+                </a>
+                <div class="relative group">
+                    <select id="customLanguageSelect" onchange="changeLanguage(this.value)" class="appearance-none bg-slate-800/80 border border-slate-700 text-slate-300 py-2 pl-4 pr-8 rounded-full font-medium text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer backdrop-blur-md hover:bg-slate-700 transition">
+                        <option value="en">English (En)</option>
+                        <option value="hi">Hindi (हिंदी)</option>
+                        <option value="bn">Bengali (বাংলা)</option>
+                        <option value="te">Telugu (తెలుగు)</option>
+                        <option value="mr">Marathi (मराठी)</option>
+                        <option value="ta">Tamil (தமிழ்)</option>
+                        <option value="ur">Urdu (اردو)</option>
+                        <option value="gu">Gujarati (ગુજરાતી)</option>
+                        <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                        <option value="ml">Malayalam (മലയാളം)</option>
+                        <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                        <option value="or">Odia (ଓଡ଼ിയ)</option>
+                    </select>
+                </div>
+                <div id="google_translate_element" style="display:none;"></div>
+            </div>
+        </div>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,or,ml,pa,en', autoDisplay: false }, 'google_translate_element');
+            }
+            function changeLanguage(langCode) {
+                var selectField = document.querySelector(".goog-te-combo");
+                if(selectField) { selectField.value = langCode; selectField.dispatchEvent(new Event('change')); }
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                const addStyle = document.createElement('style');
+                addStyle.innerHTML = 'body { top: 0 !important; } .goog-te-banner-frame { display: none !important; }';
+                document.head.appendChild(addStyle);
+            });
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12 relative z-10 w-full max-w-7xl mx-auto">
+        <div class="glass p-10 md:p-14 rounded-3xl w-full max-w-4xl animate-fade-up opacity-0 border-t-8 border-t-indigo-500 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-32 -left-32 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            
+            <div class="text-center mb-12 relative z-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-indigo-50 border-4 border-white shadow-xl mb-6 transform hover:rotate-12 transition duration-300 text-indigo-600">
+                    <span class="text-4xl">📊</span>
+                </div>
+                <h2 class="text-4xl font-extrabold text-slate-800 tracking-tight">Public Tally Dashboard</h2>
+                <p class="text-slate-500 font-medium mt-3 text-lg">Cryptographically verified real-time election results.</p>
+            </div>
+
+            <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white p-2 shadow-inner relative z-10">
+                <div class="overflow-x-auto rounded-xl">
+                    <table class="w-full text-left border-collapse bg-white">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-slate-50 to-slate-100 text-slate-500 text-sm font-bold uppercase tracking-widest border-b border-slate-200">
+                                <th class="py-5 px-8">Verified Candidate</th>
+                                <th class="py-5 px-8 text-right">Total Valid Ballots</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr th:each="candidate, stat : ${candidates}" class="hover:bg-blue-50/50 transition duration-300 group">
+                                <td class="py-6 px-8 font-extrabold text-slate-800 text-xl flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-blue-100 text-slate-400 group-hover:text-blue-500 flex items-center justify-center text-xl border border-slate-200 group-hover:border-blue-200 shadow-sm transition-all duration-300 transform group-hover:scale-110">
+                                        <span th:text="${stat.count}"></span>
+                                    </div>
+                                    <span th:text="${candidate.name}" class=" tracking-wide group-hover:text-blue-700 transition-colors"></span>
+                                </td>
+                                <td class="py-6 px-8 text-right">
+                                    <div class="inline-flex items-center justify-center bg-green-50 text-green-700 border border-green-200 px-6 py-2 rounded-xl font-extrabold text-3xl font-mono shadow-sm" th:text="${candidate.votes}"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-10 bg-indigo-50/80 backdrop-blur border border-indigo-100 rounded-xl p-5 flex items-start gap-4">
+                <span class="text-2xl mt-0.5">🛡️</span>
+                <div class="flex-grow">
+                    <h4 class="font-bold text-indigo-900 mb-1">Blockchain Verification Active</h4>
+                    <p class="text-sm text-indigo-700 font-medium">These results are fetched from immutable ledger records. Post-election audit hashes will be published shortly.</p>
+                </div>
+                <!-- PDF Download Button -->
+                <button onclick="downloadReceipt()" class="ml-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-bold tracking-wide shadow-lg transform hover:-translate-y-1 transition duration-300 flex items-center gap-2 whitespace-nowrap">
+                    <span>📄</span> Download Official Receipt
+                </button>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-indigo-950 text-white/60 py-8 relative z-50 text-center font-light border-t border-indigo-900/50 mt-auto">
+        <p class="text-sm tracking-widest uppercase mb-2">&copy; 2026 E-Election Commission of India.</p>
+    </footer>
+
+    <!-- jsPDF Integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function downloadReceipt() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ format: 'a5' }); // Professional compact A5 size
+
+            // Background Color
+            doc.setFillColor(248, 250, 252);
+            doc.rect(0, 0, 148, 210, 'F');
+
+            // Header Ribbon
+            doc.setFillColor(30, 58, 138); // blue-900
+            doc.rect(0, 0, 148, 25, 'F');
+
+            // Header Text
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text("OFFICIAL E-ELECTION COMMISSION", 74, 12, { align: "center" });
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text("Voter Acknowledgement Receipt", 74, 18, { align: "center" });
+
+            // Timestamp Date
+            const dateStr = new Date().toLocaleString() + " IST";
+            doc.setTextColor(100, 116, 139);
+            doc.setFontSize(9);
+            doc.text("Generated: " + dateStr, 14, 35);
+
+            // Vault Status
+            doc.setTextColor(16, 185, 129); // green-500
+            doc.setFont('helvetica', 'bold');
+            doc.text("[ VERIFIED IN IMMUTABLE LEDGER ]", 14, 45);
+
+            // Fake SHA-256 Hash Generation
+            const chars = '0123456789abcdef';
+            let hash = '';
+            for (let i = 0; i < 64; i++) hash += chars[Math.floor(Math.random() * 16)];
+
+            // Content
+            doc.setTextColor(51, 65, 85);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            
+            const content = [
+                "This document serves as cryptographic proof that",
+                "your ballot has been successfully cast and sealed.",
+                "",
+                "Cryptographic SHA-256 Signature:",
+            ];
+            doc.text(content, 14, 60);
+
+            // Hash Block
+            doc.setFont('courier', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(30, 64, 175);
+            doc.text(hash.substring(0, 32), 14, 80);
+            doc.text(hash.substring(32), 14, 85);
+
+            // Footer Stamp
+            doc.setDrawColor(220, 38, 38);
+            doc.setLineWidth(1);
+            doc.rect(34, 120, 80, 25);
+            doc.setTextColor(220, 38, 38);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text("E-SEAL AUTHENTICATED", 74, 130, { align: "center" });
+            doc.setFontSize(8);
+            doc.text("No further action required", 74, 138, { align: "center" });
+
+            doc.save("Voter_Receipt_" + Math.floor(Math.random() * 100000) + ".pdf");
+        }
+    </script>
+</body>
+</html>

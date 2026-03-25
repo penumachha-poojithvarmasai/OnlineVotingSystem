@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Voting System - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            top: 0 !important;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(28, 90%, 65%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(220, 90%, 65%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(140, 90%, 60%, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header-glass {
+            background: rgba(15, 23, 42, 0.85); /* Deep slate */
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(249, 115, 22, 0.8); /* Orange accent */
+        }
+
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+
+        .hover-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .hover-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15); }
+
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+        .goog-te-gadget { color: transparent !important; }
+        .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget-simple {
+            background-color: rgba(255,255,255,0.1) !important;
+            border-radius: 8px !important;
+            padding: 8px 14px !important;
+            font-size: 14px !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            cursor: pointer !important;
+        }
+        .goog-te-menu-value { color: #f8fafc !important; font-weight: 500; font-family: 'Outfit'; }
+        .goog-te-menu-value span { color: #f8fafc !important; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 relative">
+    <!-- Futuristic Particles Background -->
+    <div id="particles-js" class="fixed inset-0 z-0"></div>
+
+    <header class="header-glass text-white py-4 relative z-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center max-w-6xl">
+            <div class="flex items-center mb-4 md:mb-0 group cursor-pointer">
+                <div class="relative w-12 h-12 mr-4">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-orange-400 to-green-500 rounded-full blur group-hover:blur-md transition-all duration-500"></div>
+                    <div class="relative w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-2xl border border-white/20 shadow-lg transform group-hover:rotate-12 transition-all duration-500 text-white">
+                        🏛️
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-slate-200">Online Voting System</h1>
+                    <p class="text-[10px] text-blue-200 uppercase tracking-[0.3em] font-medium mt-1">Digital Republic Portal</p>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <select id="customLanguageSelect" onchange="changeLanguage(this.value)" class="appearance-none bg-slate-800/80 border border-slate-700 text-slate-300 py-2 pl-4 pr-10 rounded-full font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer backdrop-blur-md hover:bg-slate-700 transition">
+                    <option value="en">English (En)</option>
+                    <option value="hi">Hindi (हिंदी)</option>
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="ur">Urdu (اردو)</option>
+                    <option value="gu">Gujarati (ગુજરાતી)</option>
+                    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                    <option value="or">Odia (ଓଡ଼ിയ)</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+            <div id="google_translate_element" style="display:none;"></div>
+            <script>
+                function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,or,ml,pa,en', autoDisplay: false }, 'google_translate_element');
+                }
+                function changeLanguage(langCode) {
+                    var selectField = document.querySelector(".goog-te-combo");
+                    if(selectField) { selectField.value = langCode; selectField.dispatchEvent(new Event('change')); }
+                }
+                document.addEventListener('DOMContentLoaded', () => {
+                    const addStyle = document.createElement('style');
+                    addStyle.innerHTML = 'body { top: 0 !important; } .goog-te-banner-frame { display: none !important; }';
+                    document.head.appendChild(addStyle);
+                });
+            </script>
+            <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-6 py-12 lg:py-20 max-w-6xl relative z-10 flex flex-col items-center justify-center">
+        
+        <div class="text-center mb-16 animate-fade-up opacity-0">
+            <span class="px-4 py-1.5 rounded-full bg-blue-100/80 text-blue-800 text-sm font-bold tracking-widest uppercase shadow-sm border border-blue-200/50 mb-6 inline-block backdrop-blur-sm">Secure. Transparent. Immutable.</span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-800 tracking-tight leading-tight mt-6">
+                Cast Your Vote <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-500">From Anywhere.</span>
+            </h1>
+            <p class="mt-6 text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
+                Participate in the democratic process through our state-of-the-art encrypted civic portal. Your voice matters.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+            <!-- Voter Card -->
+            <a href="/voter/login" class="hover-card glass rounded-3xl p-10 flex flex-col items-center text-center group border-t-4 border-t-blue-500 animate-fade-up delay-100 opacity-0 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center text-5xl mb-8 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-inner">
+                    👤
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-4 group-hover:text-blue-700 transition-colors">Citizen Login</h2>
+                <p class="text-slate-500 text-lg font-light mb-8">Access your personalized voting booth securely using your Voter ID and OTP.</p>
+                <div class="mt-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white bg-blue-600 rounded-full group-hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
+                    Enter Portal <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </a>
+
+            <!-- Admin Card -->
+            <a href="/admin/login" class="hover-card glass rounded-3xl p-10 flex flex-col items-center text-center group border-t-4 border-t-slate-800 animate-fade-up delay-200 opacity-0 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-100/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-24 h-24 bg-slate-200 rounded-full flex items-center justify-center text-5xl mb-8 group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 shadow-inner">
+                    🛡️
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-4 group-hover:text-slate-900 transition-colors">Administrator</h2>
+                <p class="text-slate-500 text-lg font-light mb-8">Manage election lifecycles, monitor live data streams, and verify endpoints.</p>
+                <div class="mt-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-bold text-white bg-slate-800 rounded-full group-hover:bg-slate-900 transition-colors shadow-lg shadow-slate-900/30">
+                    Access Dashboard <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-white/60 py-8 relative z-50 text-center font-light border-t border-slate-800 mt-auto">
+        <p class="text-sm tracking-widest uppercase mb-2">&copy; 2026 E-Election Commission.</p>
+        <p class="text-xs opacity-70">Secured via Quantum-Ready 256-bit Encryption Layer.</p>
+    </footer>
+
+    <!-- Particles JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": {"number": {"value": 80,"density": {"enable": true,"value_area": 800}},"color": {"value": "#3b82f6"},"shape": {"type": "circle"},"opacity": {"value": 0.4,"random": false},"size": {"value": 3,"random": true},"line_linked": {"enable": true,"distance": 150,"color": "#60a5fa","opacity": 0.3,"width": 1},"move": {"enable": true,"speed": 1.5,"direction": "none","random": true,"straight": false,"out_mode": "out","bounce": false}},
+            "interactivity": {"detect_on": "window","events": {"onhover": {"enable": true,"mode": "grab"},"onclick": {"enable": true,"mode": "push"},"resize": true},"modes": {"grab": {"distance": 140,"line_linked": {"opacity": 1}},"push": {"particles_nb": 4}}},
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>

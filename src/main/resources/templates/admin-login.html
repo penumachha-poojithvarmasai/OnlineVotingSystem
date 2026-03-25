@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Authentication | Online Voting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; top: 0 !important; background-color: #0f172a; background-image: radial-gradient(at 0% 0%, hsla(215, 100%, 65%, 0.1) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(280, 100%, 60%, 0.1) 0px, transparent 50%); background-attachment: fixed; min-height: 100vh; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3); }
+        .header-glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-bottom: 2px solid rgba(59, 130, 246, 0.5); }
+        .input-premium { background: rgba(15, 23, 42, 0.5); border: 2px solid #334155; color: white; transition: all 0.3s ease; }
+        .input-premium:focus { background: #0f172a; border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); transform: translateY(-2px); }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; } .goog-te-gadget { color: transparent !important; } .goog-te-gadget img { display: none !important; }
+        .goog-te-gadget-simple { background-color: rgba(255,255,255,0.05) !important; border-radius: 8px !important; padding: 8px 14px !important; font-size: 14px !important; border: 1px solid rgba(255,255,255,0.1) !important; cursor: pointer !important; }
+        .goog-te-menu-value { color: #f8fafc !important; font-weight: 500; font-family: 'Outfit'; } .goog-te-menu-value span { color: #f8fafc !important; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-200 relative">
+    <!-- Futuristic Particles Background -->
+    <div id="particles-js" class="fixed inset-0 z-0"></div>
+    <header class="header-glass text-white py-4 relative z-50">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center max-w-6xl">
+            <a href="/" class="flex items-center mb-4 md:mb-0 group cursor-pointer hover:opacity-90">
+                <div class="relative w-12 h-12 mr-4">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-500 to-indigo-500 rounded-full blur-md opacity-50 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="relative w-12 h-12 bg-slate-800/80 backdrop-blur-md rounded-full flex items-center justify-center text-2xl border border-white/10 shadow-lg transform group-hover:rotate-12 transition-all duration-500">🛡️</div>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-200 to-slate-400">Online Voting System</h1>
+                </div>
+            </a>
+            <div class="relative group">
+                <select id="customLanguageSelect" onchange="changeLanguage(this.value)" class="appearance-none bg-slate-800/80 border border-slate-700 text-slate-300 py-2 pl-4 pr-8 rounded-full font-medium text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer backdrop-blur-md hover:bg-slate-700 transition">
+                    <option value="en">English (En)</option>
+                    <option value="hi">Hindi (हिंदी)</option>
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="ur">Urdu (اردو)</option>
+                    <option value="gu">Gujarati (ગુજરાતી)</option>
+                    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                    <option value="or">Odia (ଓଡ଼ിയ)</option>
+                </select>
+            </div>
+            <div id="google_translate_element" style="display:none;"></div>
+        </div>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,bn,te,mr,ta,ur,gu,kn,or,ml,pa,en', autoDisplay: false }, 'google_translate_element');
+            }
+            function changeLanguage(langCode) {
+                var selectField = document.querySelector(".goog-te-combo");
+                if(selectField) { selectField.value = langCode; selectField.dispatchEvent(new Event('change')); }
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                const addStyle = document.createElement('style');
+                addStyle.innerHTML = 'body { top: 0 !important; } .goog-te-banner-frame { display: none !important; }';
+                document.head.appendChild(addStyle);
+            });
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center px-4 py-12 relative z-10 w-full max-w-7xl mx-auto">
+        <div class="glass p-10 md:p-14 rounded-3xl w-full max-w-md animate-fade-up opacity-0 border-t-4 border-t-indigo-500 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-16 -left-16 w-40 h-40 bg-indigo-500/20 rounded-full blur-2xl animate-pulse"></div>
+            
+            <div class="text-center mb-10 relative z-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-slate-800 border border-slate-700 shadow-xl mb-6 transform hover:rotate-12 transition duration-300">
+                    <span class="text-4xl text-blue-400">👨‍💻</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white tracking-tight">Admin Gateway</h2>
+                <p class="text-slate-400 font-medium mt-2">Restricted personnel access only.</p>
+            </div>
+
+            <form method="post" action="/admin/login" class="space-y-6 relative z-10">
+                <div>
+                    <label class="block text-sm font-bold tracking-wide text-slate-300 mb-2" for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter admin username" required
+                        class="w-full p-4 rounded-xl input-premium text-lg font-medium outline-none placeholder-slate-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold tracking-wide text-slate-300 mb-2" for="password">Security Key</label>
+                    <input type="password" name="password" id="password" placeholder="••••••••" required
+                        class="w-full p-4 rounded-xl input-premium text-lg font-medium outline-none placeholder-slate-600 tracking-widest">
+                </div>
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-extrabold text-white text-lg tracking-widest uppercase transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_20px_rgba(79,70,229,0.4)] focus:ring-4 focus:ring-indigo-500/50 flex justify-center items-center gap-2">
+                        Initialize Session <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+                </div>
+                <div th:if="${error}" class="mt-4 p-4 bg-red-900/50 backdrop-blur border border-red-500/50 text-red-200 rounded-lg flex items-start">
+                    <span class="mr-2 mt-0.5 animate-pulse text-red-400">⚠️</span> <span th:text="${error}" class="font-medium"></span>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- Particles JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": {"number": {"value": 100,"density": {"enable": true,"value_area": 800}},"color": {"value": "#6366f1"},"shape": {"type": "circle"},"opacity": {"value": 0.6,"random": true},"size": {"value": 3,"random": true},"line_linked": {"enable": true,"distance": 120,"color": "#4f46e5","opacity": 0.4,"width": 1.5},"move": {"enable": true,"speed": 1,"direction": "none","random": true,"straight": false,"out_mode": "out","bounce": false}},
+            "interactivity": {"detect_on": "canvas","events": {"onhover": {"enable": true,"mode": "bubble"},"onclick": {"enable": true,"mode": "repulse"},"resize": true},"modes": {"bubble": {"distance": 200,"size": 6,"duration": 2,"opacity": 1},"repulse": {"distance": 200,"duration": 0.4}}},
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
