@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
+    @Autowired(required = false)
     private JavaMailSender mailSender;
 
-    @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.username:noreply@example.com}")
     private String fromEmail;
 
     public void sendEmail(String to, String subject, String body) {
@@ -21,8 +21,12 @@ public class EmailService {
         message.setSubject(subject);
         message.setText(body);
         try {
-            mailSender.send(message);
-            System.out.println("Email sent to " + to);
+            if (mailSender != null) {
+                mailSender.send(message);
+                System.out.println("Email sent to " + to);
+            } else {
+                throw new RuntimeException("SMTP Mail Sender is disabled or unconfigured.");
+            }
         } catch (Exception e) {
             System.err.println("FAILED TO SEND EMAIL: " + e.getMessage());
             System.out.println("\n\n=======================================================================");
