@@ -5,7 +5,6 @@ import com.example.voting_system.repository.VoterRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,14 +14,21 @@ import java.util.List;
 @Service
 public class VoterService {
 
-    @Autowired
-    private VoterRepository voterRepository;
+    private final VoterRepository voterRepository;
+
+    public VoterService(VoterRepository voterRepository) {
+        this.voterRepository = voterRepository;
+    }
 
     @PostConstruct
     public void loadVoters() {
         if (voterRepository.count() == 0) {
-            try (CSVReader reader = new CSVReader(
-                    new InputStreamReader(getClass().getClassLoader().getResourceAsStream("voters.csv")))) {
+            var resourceStream = getClass().getClassLoader().getResourceAsStream("voters.csv");
+            if (resourceStream == null) {
+                System.out.println("voters.csv not found in classpath. Skipping CSV seeding...");
+                return;
+            }
+            try (CSVReader reader = new CSVReader(new InputStreamReader(resourceStream))) {
                 List<String[]> rows = reader.readAll();
                 // Skip header
                 for (int i = 1; i < rows.size(); i++) {

@@ -8,24 +8,28 @@ import com.example.voting_system.repository.CandidateRepository;
 import com.example.voting_system.repository.VoterRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
 public class VoteController {
 
-    @Autowired
-    private CandidateRepository candidateRepository;
+    private final CandidateRepository candidateRepository;
+    private final VoterRepository voterRepository;
+    private final AuditLogRepository auditLogRepository;
 
-    @Autowired
-    private VoterRepository voterRepository;
-
-    @Autowired
-    private AuditLogRepository auditLogRepository;
+    public VoteController(CandidateRepository candidateRepository,
+                          VoterRepository voterRepository,
+                          AuditLogRepository auditLogRepository) {
+        this.candidateRepository = candidateRepository;
+        this.voterRepository = voterRepository;
+        this.auditLogRepository = auditLogRepository;
+    }
 
     // Database off by default 
     private boolean votingActive = false;
@@ -199,7 +203,7 @@ public class VoteController {
     }
 
     public void addCandidate(String name) {
-        if (name != null && !name.trim().isEmpty() && !candidateRepository.findByName(name.trim()).isPresent()) {
+        if (name != null && !name.trim().isEmpty() && candidateRepository.findByName(name.trim()).isEmpty()) {
             candidateRepository.save(new Candidate(name.trim()));
         }
     }

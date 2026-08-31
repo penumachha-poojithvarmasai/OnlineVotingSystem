@@ -5,10 +5,11 @@ import com.example.voting_system.service.EmailService;
 import com.example.voting_system.service.OtpService;
 import com.example.voting_system.service.VoterService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,14 +21,18 @@ public class LoginController {
     private final Map<String, Integer> failedAttempts = new ConcurrentHashMap<>();
     private static final int MAX_ATTEMPTS = 3;
 
-    @Autowired
-    private VoterService voterService;
+    private final VoterService voterService;
+    private final EmailService emailService;
+    private final OtpService otpService;
 
-    @Autowired
-    private EmailService emailService;
+    @org.springframework.beans.factory.annotation.Value("${admin.email:admin@example.com}")
+    private String adminEmail;
 
-    @Autowired
-    private OtpService otpService;
+    public LoginController(VoterService voterService, EmailService emailService, OtpService otpService) {
+        this.voterService = voterService;
+        this.emailService = emailService;
+        this.otpService = otpService;
+    }
 
     @GetMapping("/")
     public String home() {
@@ -150,7 +155,7 @@ public class LoginController {
             Model model) {
         if ("admin".equals(username) && "admin123".equals(password)) {
             String otp = otpService.generateOtp(username);
-            emailService.sendEmail("sunny84140104@gmail.com", "Admin Login OTP", "Your OTP is: " + otp);
+            emailService.sendEmail(adminEmail, "Admin Login OTP", "Your OTP is: " + otp);
 
             session.setAttribute("tempAdminUser", username);
             session.setAttribute("loginType", "admin");

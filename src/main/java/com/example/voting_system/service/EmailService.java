@@ -8,25 +8,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired(required = false)
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
+    private final String fromEmail;
 
-    @org.springframework.beans.factory.annotation.Value("${spring.mail.username:noreply@example.com}")
-    private String fromEmail;
+    public EmailService(@Autowired(required = false) JavaMailSender mailSender,
+                        @org.springframework.beans.factory.annotation.Value("${spring.mail.username:noreply@example.com}") String fromEmail) {
+        this.mailSender = mailSender;
+        this.fromEmail = fromEmail;
+    }
 
     public void sendEmail(String to, String subject, String body) {
+        if (mailSender == null) {
+            // TEMPORARY DEMO OTP MODE: JavaMailSender is optional/unconfigured.
+            System.out.println("Email Service: JavaMailSender unconfigured. Skipped sending email to: " + to);
+            return;
+        }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
         try {
-            if (mailSender != null) {
-                mailSender.send(message);
-                System.out.println("Email sent to " + to);
-            } else {
-                throw new RuntimeException("SMTP Mail Sender is disabled or unconfigured.");
-            }
+            mailSender.send(message);
+            System.out.println("Email sent to " + to);
         } catch (Exception e) {
             System.err.println("FAILED TO SEND EMAIL: " + e.getMessage());
             System.out.println("\n\n=======================================================================");
